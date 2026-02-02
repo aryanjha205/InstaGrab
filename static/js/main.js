@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const downloadLink = document.getElementById('download-link');
     const streamBtn = document.getElementById('stream-btn');
     const videoPlayer = document.getElementById('video-player');
-    
+
     const savedTheme = localStorage.getItem('theme') || 'dark';
     html.setAttribute('data-theme', savedTheme);
 
@@ -33,8 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
     })();
 
     // Register service worker for PWA
+    // Register service worker for PWA
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/static/sw.js');
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('SW Registered!', reg))
+            .catch(err => console.log('SW Failed!', err));
     }
 
     themeToggle.addEventListener('click', () => {
@@ -196,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (videoEl.requestFullscreen) {
                     videoEl.requestFullscreen();
                 }
-            }).catch(() => {});
+            }).catch(() => { });
         }
     });
 });

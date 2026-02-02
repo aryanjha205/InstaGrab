@@ -1,14 +1,26 @@
-from flask import Flask, render_template, request, jsonify, Response, stream_with_context
+
+from flask import Flask, render_template, request, jsonify, Response, stream_with_context, send_from_directory
 import requests
 import re
 import logging
 import time
+import os
 from urllib.parse import quote_plus
 import instaloader
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
+# --- PWA Static Files Serving ---
+@app.route('/manifest.json')
+def serve_manifest():
+    return send_from_directory('.', 'manifest.json', mimetype='application/manifest+json')
+
+@app.route('/sw.js')
+def serve_sw():
+    return send_from_directory('static', 'sw.js', mimetype='application/javascript')
+# --------------------------------
 
 def get_file_size(url):
     """Get file size from URL."""
